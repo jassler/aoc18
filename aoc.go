@@ -6,14 +6,13 @@ import (
 	"path"
 	"path/filepath"
 
-	"github.com/jassler/aoc18/day2"
-
-	"github.com/jassler/aoc18/day1"
+	"github.com/jassler/aoc18/day01"
+	"github.com/jassler/aoc18/day02"
 )
 
 var functions = map[string]func(input string, ch chan<- string){
-	"1": day1.Start,
-	"2": day2.Start,
+	"1": day01.Start,
+	"2": day02.Start,
 }
 
 func main() {
