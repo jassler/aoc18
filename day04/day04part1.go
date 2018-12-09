@@ -18,23 +18,16 @@ func part1(logs []*loggedAction, ch chan<- string) {
 func getLongestSleepingGuard(logs []*loggedAction) int {
 	timeSlept := map[int]int{}
 
-	lastAction := wakesUp
-	var currentGuard int
 	var timeFallenAsleep int
 	for _, logged := range logs {
 
 		// i'm barely checking anything, just hoping that I'm getting valid input
-		if logged.action == beginsShift && (lastAction == wakesUp || lastAction == beginsShift) {
-			currentGuard = logged.guard
-
-		} else if logged.action == fallsAsleep && (lastAction == wakesUp || lastAction == beginsShift) {
+		if logged.action == fallsAsleep {
 			timeFallenAsleep = logged.minute
 
-		} else if logged.action == wakesUp && lastAction == fallsAsleep {
-			timeSlept[currentGuard] += logged.minute - timeFallenAsleep
-
+		} else if logged.action == wakesUp {
+			timeSlept[logged.guard] += logged.minute - timeFallenAsleep
 		}
-		lastAction = logged.action
 	}
 
 	maxGuard := 0
@@ -55,19 +48,10 @@ func getSleepiestMinute(logs []*loggedAction, sleepiestGuard int) int {
 	maxMinutesIndex := 0
 	maxMinutes := 0
 
-	curGuard := -1
 	var timeFallenAsleep int
 	for _, l := range logs {
-		if curGuard != sleepiestGuard {
-			if l.action == beginsShift {
-				curGuard = l.guard
-			}
-
+		if l.guard != sleepiestGuard || l.action == beginsShift {
 			continue
-		}
-
-		if l.action == beginsShift {
-			curGuard = l.guard
 
 		} else if l.action == fallsAsleep {
 			timeFallenAsleep = l.minute

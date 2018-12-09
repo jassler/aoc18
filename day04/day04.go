@@ -42,6 +42,8 @@ func Start(inputPath string, ch chan<- string) {
 	go part2(logs, ch)
 }
 
+var curGuard int
+
 func parseDate(line string, index int) error {
 	// [1518-08-23 00:39] wakes up
 	var minute int
@@ -55,25 +57,21 @@ func parseDate(line string, index int) error {
 		return fmt.Errorf("\"%s\" produced the following error while being parsed: %v", line, err)
 	}
 
-	curGuard := -1
-	changeGuard := func(newGuard int) {
-		curGuard = newGuard
-	}
-
 	switch line[actionIndex:] {
 	case "falls asleep":
 		action = fallsAsleep
+
 	case "wakes up":
 		action = wakesUp
-	default:
 
+	default:
 		action = beginsShift
 		var newGuard int
 		_, err = fmt.Sscanf(line[actionIndex:], "Guard #%d", &newGuard)
 		if err != nil {
 			return err
 		}
-		changeGuard(newGuard)
+		curGuard = newGuard
 	}
 	logs[index] = &loggedAction{
 		action: action,
