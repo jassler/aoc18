@@ -2,8 +2,6 @@ package day04
 
 import (
 	"fmt"
-	"log"
-	"time"
 )
 
 // part1
@@ -22,7 +20,7 @@ func getLongestSleepingGuard(logs []*loggedAction) int {
 
 	lastAction := wakesUp
 	var currentGuard int
-	var timeFallenAsleep *time.Time
+	var timeFallenAsleep int
 	for _, logged := range logs {
 
 		// i'm barely checking anything, just hoping that I'm getting valid input
@@ -30,16 +28,11 @@ func getLongestSleepingGuard(logs []*loggedAction) int {
 			currentGuard = logged.guard
 
 		} else if logged.action == fallsAsleep && (lastAction == wakesUp || lastAction == beginsShift) {
-			timeFallenAsleep = &logged.timestamp
+			timeFallenAsleep = logged.minute
 
 		} else if logged.action == wakesUp && lastAction == fallsAsleep {
-			timeSlept[currentGuard] += int(logged.timestamp.Sub(*timeFallenAsleep).Minutes())
+			timeSlept[currentGuard] += logged.minute - timeFallenAsleep
 
-		} else {
-			log.Fatalf("Guard did something in the wrong order! (before %d, now %d, %s)",
-				lastAction,
-				logged.action,
-				logged.timestamp.Format("2006-01-02 15:04"))
 		}
 		lastAction = logged.action
 	}
@@ -63,7 +56,7 @@ func getSleepiestMinute(logs []*loggedAction, sleepiestGuard int) int {
 	maxMinutes := 0
 
 	curGuard := -1
-	var timeFallenAsleep *time.Time
+	var timeFallenAsleep int
 	for _, l := range logs {
 		if curGuard != sleepiestGuard {
 			if l.action == beginsShift {
@@ -77,10 +70,10 @@ func getSleepiestMinute(logs []*loggedAction, sleepiestGuard int) int {
 			curGuard = l.guard
 
 		} else if l.action == fallsAsleep {
-			timeFallenAsleep = &l.timestamp
+			timeFallenAsleep = l.minute
 
 		} else {
-			for min := timeFallenAsleep.Minute(); min < l.timestamp.Minute(); min++ {
+			for min := timeFallenAsleep; min < l.minute; min++ {
 				minutes[min]++
 				if minutes[min] > maxMinutes {
 					maxMinutesIndex = min

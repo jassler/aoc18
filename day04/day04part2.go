@@ -2,7 +2,6 @@ package day04
 
 import (
 	"fmt"
-	"time"
 )
 
 // part2
@@ -10,7 +9,7 @@ func part2(logs []*loggedAction, ch chan<- string) {
 
 	guardSleepCycle := map[int][60]int{}
 
-	var timeFallenAsleep *time.Time
+	var timeFallenAsleep int
 	curGuard := -1
 
 	maxGuardID := 0
@@ -22,10 +21,10 @@ func part2(logs []*loggedAction, ch chan<- string) {
 			curGuard = l.guard
 
 		} else if l.action == fallsAsleep {
-			timeFallenAsleep = &l.timestamp
+			timeFallenAsleep = l.minute
 
 		} else {
-			for min := timeFallenAsleep.Minute(); min < l.timestamp.Minute(); min++ {
+			for min := timeFallenAsleep; min < l.minute; min++ {
 				cycle, ok := guardSleepCycle[curGuard]
 				if ok {
 					cycle[min]++
