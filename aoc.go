@@ -11,6 +11,7 @@ import (
 	"github.com/jassler/aoc18/day03"
 	"github.com/jassler/aoc18/day04"
 	"github.com/jassler/aoc18/day05"
+	"github.com/jassler/aoc18/day06"
 )
 
 var functions = map[string]func(input string, ch chan<- string){
@@ -19,6 +20,7 @@ var functions = map[string]func(input string, ch chan<- string){
 	"3": day03.Start,
 	"4": day04.Start,
 	"5": day05.Start,
+	"6": day06.Start,
 }
 
 func main() {
