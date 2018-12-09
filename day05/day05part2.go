@@ -32,8 +32,7 @@ func part2(input string, ch chan<- string) {
 
 		// check length
 		collapse(toCheck)
-		var l int
-		if l = bytes.IndexByte(toCheck, 0); l < lowestPolymerLength {
+		if l := bytes.IndexByte(toCheck, 0); l < lowestPolymerLength {
 			lowestPolymerLength = l
 		}
 	}
