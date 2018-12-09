@@ -3,7 +3,7 @@ package fileparser
 import (
 	"bufio"
 	"errors"
-	"fmt"
+	"log"
 	"os"
 	"strconv"
 )
@@ -12,7 +12,7 @@ import (
 func ToStringArray(filepath string) []string {
 	strings := make([]string, 0)
 
-	toArray(filepath, func(line string) error {
+	ReadLines(filepath, func(line string) error {
 		strings = append(strings, line)
 		return nil
 	})
@@ -24,7 +24,7 @@ func ToStringArray(filepath string) []string {
 func ToIntArray(filepath string) []int {
 	numbers := make([]int, 0)
 
-	toArray(filepath, func(line string) error {
+	ReadLines(filepath, func(line string) error {
 		num, err := strconv.Atoi(line)
 		if err != nil {
 			return errors.New(line + " could not be converted to a number!")
@@ -36,9 +36,9 @@ func ToIntArray(filepath string) []int {
 	return numbers
 }
 
-// toArray opens a file and calls function f on each line
+// ReadLines opens a file and calls function f on each line
 // if an error appears the program shuts down (panic)
-func toArray(filepath string, f func(string) error) {
+func ReadLines(filepath string, f func(string) error) {
 
 	// open file
 	file, err := os.Open(filepath)
@@ -56,7 +56,7 @@ func toArray(filepath string, f func(string) error) {
 
 		err := f(scanner.Text())
 		if err != nil {
-			panic(fmt.Sprintf("Error in line %d: %s", lineNum, err.Error()))
+			log.Fatalf("Error in line %d: %s", lineNum, err.Error())
 		}
 	}
 }
