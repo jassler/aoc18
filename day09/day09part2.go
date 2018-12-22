@@ -3,7 +3,10 @@ package day09
 import "fmt"
 
 // part2
-func part2(lines []string, ch chan<- string) {
+func part2(players, lastMarble int, ch chan<- string) {
 
-	ch <- fmt.Sprintf("Part 2: ")
+	scores := simulateGame(players, lastMarble*100)
+	player, score := findWinningPlayer(scores)
+
+	ch <- fmt.Sprintf("Part 2: Player %d won with %d points", player, score)
 }

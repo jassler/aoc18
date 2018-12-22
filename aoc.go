@@ -14,17 +14,19 @@ import (
 	"github.com/jassler/aoc18/day06"
 	"github.com/jassler/aoc18/day07"
 	"github.com/jassler/aoc18/day08"
+	"github.com/jassler/aoc18/day09"
 )
 
 var functions = map[string]func(input string, ch chan<- string){
-	"1": day01.Start,
-	"2": day02.Start,
-	"3": day03.Start,
-	"4": day04.Start,
-	"5": day05.Start,
-	"6": day06.Start,
-	"7": day07.Start,
-	"8": day08.Start,
+	"01": day01.Start,
+	"02": day02.Start,
+	"03": day03.Start,
+	"04": day04.Start,
+	"05": day05.Start,
+	"06": day06.Start,
+	"07": day07.Start,
+	"08": day08.Start,
+	"09": day09.Start,
 }
 
 func main() {
@@ -39,6 +41,9 @@ func main() {
 	}
 
 	day := os.Args[1]
+	if len(day) == 1 {
+		day = "0" + day
+	}
 
 	inputPath, err := filepath.Abs("input")
 	if err != nil {

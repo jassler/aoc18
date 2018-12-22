@@ -1,10 +1,17 @@
 package day09
 
-import "github.com/jassler/aoc18/fileparser"
+import (
+	"fmt"
+
+	"github.com/jassler/aoc18/fileparser"
+)
 
 // Start explores this problem set: https://adventofcode.com/2018/day/9
 func Start(inputPath string, ch chan<- string) {
-	lines := fileparser.ToStringArray(inputPath)
-	go part1(lines, ch)
-	go part2(lines, ch)
+
+	var players, points int
+	fmt.Sscanf(fileparser.ToStringArray(inputPath)[0], "%d players; last marble is worth %d points", &players, &points)
+	go part1(players, points, ch)
+	go part2(players, points, ch)
+
 }
